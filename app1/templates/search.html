@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Search</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app1/style.css' %}" />
+    <script src="{% static 'app1/tabler.js' %}" defer></script>
+</head>
+
+<body>
+    <h1>Student Search</h1>
+
+    <form id="form1">
+        <label for="search_by">Search By :</label>
+
+        <select id="search_by" name="search_by">
+        <option value="name" selected>Name</option>
+        <option value="id">ID</option>
+      </select>
+
+        <input type="text" name="key" />
+
+        <br /><br /><br />
+        <input type="submit" value="Submit" />
+    </form>
+
+    <br /><br /><br />
+
+    <h2 id="loading">Loading...</h2>
+
+    <table id="result"></table>
+</body>
+
+<script>
+    const form = document.getElementById("form1");
+    const loading = document.getElementById("loading");
+    const table = document.getElementById("result");
+
+    form.addEventListener("submit", async(e) => {
+        e.preventDefault();
+
+        data = [];
+
+        try {
+            loading.style.display = "block";
+            table.innerHTML = "";
+
+            const url = form.action;
+            const formData = new FormData(event.target);
+            const formDataString = new URLSearchParams(formData).toString();
+
+            const res = await fetch("/student?" + formDataString);
+            data = await res.json();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            loading.style.display = "none";
+
+            buildTable(data);
+        }
+    });
+</script>
+
+</html>

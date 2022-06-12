@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Student</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app1/style.css' %}" />
+    <script src="{% static 'app1/tabler.js' %}" defer></script>
+</head>
+
+<body>
+    <h1>Create Student</h1>
+
+    <form id="form1">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="first_name" required /> <br />
+
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="last_name" /> <br />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" /> <br />
+
+        <label for="fname">Gender</label>
+        <input type="text" id="gender" name="gender" /> <br />
+
+        <label for="school">School</label>
+        <select id="school" name="school_id">
+        {% for school in schools %}
+
+        <option value="{{school.id}}">{{school.name}}</option>
+
+        {% endfor %}
+      </select>
+        <br />
+
+        <label for="book">School</label>
+        <select id="book" name="book_id">
+        {% for book in books %}
+
+        <option value="{{book.id}}">{{book.name}}</option>
+
+        {% endfor %}
+      </select>
+        <br />
+
+        <br /><br /><br />
+        <input type="submit" value="Submit" />
+    </form>
+    <br /><br /><br />
+    <h2 id="loading">Loading...</h2>
+
+    <table id="result"></table>
+</body>
+
+<script>
+    const form = document.getElementById("form1");
+    const loading = document.getElementById("loading");
+    const table = document.getElementById("result");
+
+    form.addEventListener("submit", async(e) => {
+        e.preventDefault();
+
+        data = [];
+
+        try {
+            loading.style.display = "block";
+            table.innerHTML = "";
+
+            const url = form.action;
+            const formData = new FormData(event.target);
+
+            const res = await fetch("/student/", {
+                method: "post",
+                headers: {
+                    "X-CSRFToken": "{{csrf_token}}",
+                },
+                body: formData,
+            });
+
+            const resData = await res.json();
+            data = [resData];
+        } catch (error) {
+            console.error(error);
+        } finally {
+            loading.style.display = "none";
+
+            buildTable(data);
+        }
+    });
+</script>
+
+</html>

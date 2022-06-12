@@ -1,0 +1,46 @@
+h1 {
+    text-align: center;
+}
+
+form {
+    text-align: center;
+}
+
+label {
+    font-size: 24;
+}
+
+table {
+    margin: 0 auto;
+}
+
+#loading {
+    text-align: center;
+    display: none;
+}
+
+th,
+td,
+p,
+input {
+    font: 14px Verdana;
+}
+
+table,
+th,
+td {
+    border: solid 2px #ddd;
+    border-collapse: collapse;
+    padding: 2px 3px;
+    text-align: center;
+}
+
+th {
+    font-weight: bold;
+}
+
+input,
+select {
+    font: 14px Verdana;
+    margin: 1rem;
+}
